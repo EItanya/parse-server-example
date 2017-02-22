@@ -19,12 +19,20 @@ Parse.Cloud.define("createStory", function(request, response) {
       // Execute any logic that should take place after the object is saved.
       console.log(entry)
       story.set('first_entry', entry.objectId)
-      response.success("Creaded Story Object")
+      story.save(null, {
+        success: function(story){
+          response.success("Story saved successfully");
+        },
+        error: function(story, error){
+          response.error("Story was not saved correctly")
+        }
+      });
     },
     error: function(entry, error) {
       // Execute any logic that should take place if the save fails.
       // error is a Parse.Error with an error code and message.
       console.log('Failed to create new object, with error code: ' + error.message);
+      response.error("Entry could not be saved to DB")
     }
   });
 
