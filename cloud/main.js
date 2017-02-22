@@ -1,23 +1,32 @@
 
-Parse.Cloud.define('createStory', function(request, response) {
+// Parse.Cloud.define('createStory', function(request, response) {
+//   console.log(request.params.story)
+//   console.log(request.params.entry)
+// });
+
+Parse.Cloud.define("createStory", function(request, response) {
   console.log(request.params.story)
   console.log(request.params.entry)
-  res.success('Hi');
-});
 
-// Parse.Cloud.define("createStory", function(request, response) {
-//   var query = new Parse.Query("Review");
-//   query.equalTo("movie", request.params.movie);
-//   query.find({
-//     success: function(results) {
-//       var sum = 0;
-//       for (var i = 0; i < results.length; ++i) {
-//         sum += results[i].get("stars");
-//       }
-//       response.success(sum / results.length);
-//     },
-//     error: function() {
-//       response.error("movie lookup failed");
-//     }
-//   });
-// });
+  var story = new Parse.Object("Story")
+  var entry = new Parse.Object("Entry")
+
+  Parse.Object.saveAll([story, entry], {
+    success: function(list) {
+      console.log(list)
+      entry.fetch({
+        success: function(myObject){
+          console.log(myObject)
+          story.set("first_entry", myObject.objectId)
+        },
+        error: function(myObject, error) {
+          console.log(error)
+        }
+      })
+    },
+    error: function(error) {
+      console.log(error)
+    }
+  })
+
+});
