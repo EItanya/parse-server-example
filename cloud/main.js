@@ -18,15 +18,43 @@ Parse.Cloud.define("createStory", function(request, response) {
         success: function(myObject){
           console.log(myObject)
           story.set("first_entry", myObject.objectId)
+          story.save(null, {
+            success: function(myObject) {
+              console.log(myObject)
+              response.success(true)
+            },
+            error: function(){
+              response.error("Story could not be resaved")
+              response.success(false)
+            }
+          })
         },
         error: function(myObject, error) {
+          response.error("Entry could not be retrieved from DB")
+          response.success(false)
           console.log(error)
         }
       })
     },
     error: function(error) {
+      response.error("Story, or Entry could not be saved to DB")
+      response.success(false)
       console.log(error)
     }
   })
 
+  // var query = new Parse.Query("Review");
+  // query.equalTo("movie", request.params.movie);
+  // query.find({
+  //   success: function(results) {
+  //     var sum = 0;
+  //     for (var i = 0; i < results.length; ++i) {
+  //       sum += results[i].get("stars");
+  //     }
+  //     response.success(sum / results.length);
+  //   },
+  //   error: function() {
+  //     response.error("movie lookup failed");
+  //   }
+  // });
 });
