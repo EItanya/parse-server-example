@@ -5,11 +5,12 @@
 // });
 
 Parse.Cloud.define("createStory", function(request, response) {
-  console.log(request.params.story)
-  console.log(request.params.entry)
 
   var story = new Parse.Object("Story")
   var entry = new Parse.Object("Entry")
+
+  story.set(request.params.story)
+  entry.set(request.params.entry)
 
   Parse.Object.saveAll([story, entry], {
     success: function(list) {
@@ -25,20 +26,18 @@ Parse.Cloud.define("createStory", function(request, response) {
             },
             error: function(){
               response.error("Story could not be resaved")
-              response.success(false)
+              console.log("story could not be resaved")
             }
           })
         },
         error: function(myObject, error) {
           response.error("Entry could not be retrieved from DB")
-          response.success(false)
           console.log(error)
         }
       })
     },
     error: function(error) {
       response.error("Story, or Entry could not be saved to DB")
-      response.success(false)
       console.log(error)
     }
   })
