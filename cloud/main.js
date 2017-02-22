@@ -6,8 +6,12 @@
 
 Parse.Cloud.define("createStory", function(request, response) {
 
-  var story = new Parse.Object("Story")
-  var entry = new Parse.Object("Entry")
+  var Story = Parse.Object.extend("Story");
+  var Entry = Parse.Object.extend("Entry");
+
+
+  var story = new Story()
+  var entry = new Entry()
 
   story.set(request.params.story)
   entry.set(request.params.entry)
