@@ -12,6 +12,8 @@ Parse.Cloud.define("createStory", function(request, response) {
   story.set(request.params.story)
   entry.set(request.params.entry)
 
+  console.log(story)
+
   Parse.Object.saveAll([story, entry], {
     success: function(list) {
       console.log(list)
