@@ -13,6 +13,19 @@ Parse.Cloud.define("createStory", function(request, response) {
   story.set(request.params.story)
   entry.set(request.params.entry)
 
+
+  story.save(null, {
+    success: function(story) {
+      // Execute any logic that should take place after the object is saved.
+      console.log('New object created with objectId: ' + gameScore.id);
+    },
+    error: function(story, error) {
+      // Execute any logic that should take place if the save fails.
+      // error is a Parse.Error with an error code and message.
+      console.log('Failed to create new object, with error code: ' + error.message);
+    }
+  });
+
   // var objs = [];
   // for (var i = 0; i < story.length; i++) {
   //   var item = data[i];
@@ -27,34 +40,34 @@ Parse.Cloud.define("createStory", function(request, response) {
 
   var objs = [story, entry]
 
-  Parse.Object.saveAll(objs).then(
-    function(results){
-      console.log(results)
-      entry.fetch({
-        success: function(myObject){
-          console.log(myObject)
-          story.set("first_entry", myObject.objectId)
-          story.save(null, {
-            success: function(myObject) {
-              console.log(myObject)
-              response.success(true)
-            },
-            error: function(){
-              response.error("Story could not be resaved")
-              console.log("story could not be resaved")
-            }
-          })
-        },
-        error: function(myObject, error) {
-          response.error("Entry could not be retrieved from DB")
-          console.log(error)
-        }
-      })
-    }, function(error){
-      esponse.error("Story, or Entry could not be saved to DB")
-      console.log(error)
-    }
-  );
+  // Parse.Object.saveAll(objs).then(
+  //   function(results){
+  //     console.log(results)
+  //     entry.fetch({
+  //       success: function(myObject){
+  //         console.log(myObject)
+  //         story.set("first_entry", myObject.objectId)
+  //         story.save(null, {
+  //           success: function(myObject) {
+  //             console.log(myObject)
+  //             response.success(true)
+  //           },
+  //           error: function(){
+  //             response.error("Story could not be resaved")
+  //             console.log("story could not be resaved")
+  //           }
+  //         })
+  //       },
+  //       error: function(myObject, error) {
+  //         response.error("Entry could not be retrieved from DB")
+  //         console.log(error)
+  //       }
+  //     })
+  //   }, function(error){
+  //     esponse.error("Story, or Entry could not be saved to DB")
+  //     console.log(error)
+  //   }
+  // );
   
   // , {
   //   success: function(list) {
