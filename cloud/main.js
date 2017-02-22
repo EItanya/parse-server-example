@@ -14,12 +14,14 @@ Parse.Cloud.define("createStory", function(request, response) {
   entry.set(request.params.entry)
 
 
-  story.save(null, {
-    success: function(story) {
+  entry.save(null, {
+    success: function(entry) {
       // Execute any logic that should take place after the object is saved.
-      console.log('New object created with objectId: ' + gameScore.id);
+      console.log(entry)
+      story.set('first_entry', entry.objectId)
+      response.success("Creaded Story Object")
     },
-    error: function(story, error) {
+    error: function(entry, error) {
       // Execute any logic that should take place if the save fails.
       // error is a Parse.Error with an error code and message.
       console.log('Failed to create new object, with error code: ' + error.message);
@@ -36,7 +38,6 @@ Parse.Cloud.define("createStory", function(request, response) {
   //   objs.push(obj);
   // }
 
-  console.log(story)
 
   var objs = [story, entry]
 
