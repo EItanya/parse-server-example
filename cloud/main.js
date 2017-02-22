@@ -18,7 +18,7 @@ Parse.Cloud.define("createStory", function(request, response) {
     success: function(entry) {
       // Execute any logic that should take place after the object is saved.
       console.log(entry)
-      story.set('first_entry', entry.objectId)
+      story.set('first_entry', entry.id)
       story.save(null, {
         success: function(story){
           response.success("Story saved successfully");
