@@ -19,9 +19,10 @@ Parse.Cloud.define("createStory", function(request, response) {
       // Execute any logic that should take place after the object is saved.
       console.log(entry)
       story.set('first_entry', entry.id)
+      story.set('previous_entry', entry.id)
       story.save(null, {
         success: function(story){
-          response.success("Story saved successfully");
+          response.success(story);
         },
         error: function(story, error){
           response.error("Story was not saved correctly")
@@ -35,19 +36,6 @@ Parse.Cloud.define("createStory", function(request, response) {
       response.error("Entry could not be saved to DB")
     }
   });
-
-  // var objs = [];
-  // for (var i = 0; i < story.length; i++) {
-  //   var item = data[i];
-  //   var obj = new Parse.Object(table);
-  //   for (var prop in item) {
-  //       obj.set(prop, item[prop]);
-  //   }
-  //   objs.push(obj);
-  // }
-
-
-  var objs = [story, entry]
 
   // Parse.Object.saveAll(objs).then(
   //   function(results){
