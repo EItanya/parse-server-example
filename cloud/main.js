@@ -68,7 +68,7 @@ Parse.Cloud.define("createStory", function(request, response) {
       story.set('entry_ids', [entry.id])
       story.save(null, {
         success: function(story){
-          response.success(story);
+          response.success(story.id);
         },
         error: function(story, error){
           response.error("Story was not saved correctly")
