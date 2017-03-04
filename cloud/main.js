@@ -69,7 +69,7 @@ Parse.Cloud.define("createStory", function(request, response) {
       story.save(null, {
         success: function(story){
           var userQuery = new Parse.Query(Parse.User);
-          userQuery.equalTo("objectId", userId);
+          userQuery.equalTo("objectId", story.get("created_by"));
           //When getUser(id) is called a promise is returned. Notice the .then this means that once the promise is fulfilled it will continue. See getUser() function below.
           getUser(id).then(   
               function(user){
@@ -77,7 +77,7 @@ Parse.Cloud.define("createStory", function(request, response) {
                   var completedArray = user.get("completed_stories")
                   completedArray.push(story.id)
                   user.set("completed_stories", completedArray)
-                  response.success(story)
+                  response.success(user.id)
               },
               function(error){
                   response.error(error);
