@@ -68,22 +68,7 @@ Parse.Cloud.define("createStory", function(request, response) {
       story.set('entry_ids', [entry.id])
       story.save(null, {
         success: function(story){
-          var userQuery = new Parse.Query(Parse.User);
-          userQuery.equalTo("objectId", story.get("created_by"));
-          //When getUser(id) is called a promise is returned. Notice the .then this means that once the promise is fulfilled it will continue. See getUser() function below.
-          getUser(id).then(   
-              function(user){
-                  //User is Here
-                  var completedArray = user.get("completed_stories")
-                  completedArray.push(story.id)
-                  user.set("completed_stories", completedArray)
-                  response.success(user.id)
-              },
-              function(error){
-                  response.error(error);
-              }
-          );
-          // response.success(story);
+          response.success(story);
         },
         error: function(story, error){
           response.error("Story was not saved correctly")
@@ -99,24 +84,3 @@ Parse.Cloud.define("createStory", function(request, response) {
   });
 
 });
-
-function getUser(userId)
-{
-    Parse.Cloud.useMasterKey();
-    var userQuery = new Parse.Query(Parse.User);
-    userQuery.equalTo("objectId", userId);
-
-    //Here you aren't directly returning a user, but you are returning a function that will sometime in the future return a user. This is considered a promise.
-    return userQuery.first
-    ({
-        success: function(userRetrieved)
-        {
-            //When the success method fires and you return userRetrieved you fulfill the above promise, and the userRetrieved continues up the chain.
-            return userRetrieved;
-        },
-        error: function(error)
-        {
-            return error;
-        }
-    });
-};
