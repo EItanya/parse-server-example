@@ -29,12 +29,15 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
           //change turn to next user
           var users = story.get("users")
           var current_user = story.get("current_user")
+          console.log(current_user)
           var index = _.indexOf(users, current_user)
+          console.log(index)
           if(index == user.length - 1) {
             current_user = _.first(user)
           } else {
             current_user = user[index+1]
           }
+          console.log(current_user)
           story.set("current_user", current_user)
 
           story.save(null, {
