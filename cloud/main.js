@@ -22,6 +22,7 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
           var entry_ids = story.get("entry_ids")
           entry_ids.push(entry.id)
           story.set("entry_ids",  entry_ids)
+          story.set("previous_entry", entry.id)
           story.save(null, {
             success: function(story){
               response.success(story.id)
