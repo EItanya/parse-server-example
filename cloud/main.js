@@ -1,4 +1,6 @@
 
+var _ = require('underscore')
+
 // Parse.Cloud.define('createStory', function(request, response) {
 //   console.log(request.params.story)
 //   console.log(request.params.entry)
@@ -23,6 +25,18 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
           entry_ids.push(entry.id)
           story.set("entry_ids",  entry_ids)
           story.set("previous_entry", entry.id)
+          story.set('currenty_entry', story.get('current_entry') + 1)
+          //change turn to next user
+          var users = story.get("users")
+          var current_user = story.get("current_user")
+          var index = _.indexOf(users, current_user)
+          if(index == user.length - 1) {
+            current_user = _.first(user)
+          } else {
+            current_user = user[index+1]
+          }
+          story.set("current_user", current_user)
+
           story.save(null, {
             success: function(story){
               response.success(story.id)
