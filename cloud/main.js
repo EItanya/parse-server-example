@@ -6,6 +6,11 @@ var _ = require('underscore')
 //   console.log(request.params.entry)
 // });
 
+
+Parse.Cloud.define("notificationService", function(request, response) {
+  console.log("We're in the notification service")
+})
+
 //Not pushed yet but this code should just 
 //add an entry to the story list and save entry
 Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
