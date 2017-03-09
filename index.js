@@ -18,7 +18,7 @@ var api = new ParseServer({
   appId: process.env.APP_ID || 'Snowball',
   masterKey: process.env.MASTER_KEY || 'snowballMasterKey', //Add your master key here. Keep it secret!
   serverURL: process.env.SERVER_URL || 'http://mobile-news-app.herokuapp.com/parse',  // Don't forget to change to https if needed
-  javascriptKey: process.env.JAVASCRIPT_KEY || 'uniqueKey',
+  // javaScriptKey: process.env.JAVASCRIPT_KEY || 'uniqueKey',
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   },
