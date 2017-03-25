@@ -7,9 +7,22 @@ var _ = require('underscore')
 // });
 
 
+
+
 Parse.Cloud.define("notificationService", function(request, response) {
   console.log("We're in the notification service")
 })
+
+
+// Parse.Cloud.define("getAllUsersForStory", function(request, response) {
+  
+//   var users = request.params.users
+//   var storyId = request.params.storyId
+
+//   var Invite = 
+
+
+// })
 
 //Not pushed yet but this code should just 
 //add an entry to the story list and save entry
