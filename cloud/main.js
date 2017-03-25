@@ -18,11 +18,15 @@ function sendUserNotification(id) {
 
   // var query = new Parse.Query(Parse.Installation);
   // query.exists("deviceToken");
-  console.log("User ID for push:" + id)
+
+  var query = new Parse.Query(Parse.Installation);
+  query.equalTo('channels', id);  
+
+
 
   Parse.Push.send({
-    channels: [ id ],
-    // where: query,
+    // channels: [ id ],
+    where: query,
     data: {
       alert: "It's your turn in This story!"
     }
