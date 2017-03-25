@@ -18,6 +18,7 @@ function sendUserNotification(id) {
 
   // var query = new Parse.Query(Parse.Installation);
   // query.exists("deviceToken");
+  console.log("User ID for push:" + id)
 
   Parse.Push.send({
     channels: [ id ],
