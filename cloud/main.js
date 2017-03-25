@@ -11,7 +11,26 @@ var _ = require('underscore')
 
 Parse.Cloud.define("notificationService", function(request, response) {
   console.log("We're in the notification service")
+
 })
+
+function sendUserNotification(id) {
+  Parse.Push.send({
+    channels: [ id ],
+    data: {
+      alert: "It's your turn in This story!"
+    }
+    }, {
+      success: function() {
+        console.log("push notification was sent successfully")
+        // Push was successful
+      },
+      error: function(error) {
+        console.log("error sending push notification")
+        // Handle error
+      }
+  });
+}
 
 
 // Parse.Cloud.define("getAllUsersForStory", function(request, response) {
@@ -55,6 +74,7 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
             current_user = users[index+1]
           }
           story.set("current_user", current_user)
+          sendUserNotification(current_user)
           story.save(null, {
             success: function(story){
               response.success(story.id)
