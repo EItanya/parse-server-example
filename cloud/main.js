@@ -33,7 +33,8 @@ function sendUserNotification(id) {
       error: function(error) {
         console.log("error sending push notification")
         // Handle error
-      }
+      },
+      useMasterKey: true
   });
 }
 
