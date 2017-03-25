@@ -15,8 +15,13 @@ Parse.Cloud.define("notificationService", function(request, response) {
 })
 
 function sendUserNotification(id) {
+
+  var query = new Parse.Query(Parse.Installation);
+  query.exists("deviceToken");
+
   Parse.Push.send({
     channels: [ id ],
+    where: query,
     data: {
       alert: "It's your turn in This story!"
     }
