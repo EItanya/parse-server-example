@@ -68,6 +68,32 @@ function sendUserNotification(id) {
 
 
 // })
+//Function to update last_update to officially start turn of person
+Parse.Cloud.define("startUserTurn", function(request, response) {
+  var Story = Parse.Object.extend("Story");
+  var query = new Parse.Query(Story)
+
+  query.get(request.params.storyId, {
+    success: function(story) {
+      console.log(story.id)
+      story.set('last_update', new Date())
+      story.save(null, {
+        success: function(story){
+          response.success(story.id)
+          console.log("success re-saving story")
+        },
+        error: function(story, error){
+          response.error("Story was not re-saved correctly")
+        }
+      });
+    },
+    error: function(error) {
+      console.log(error)
+      response.error(error)
+    }
+  })
+})
+
 
 //Not pushed yet but this code should just 
 //add an entry to the story list and save entry
