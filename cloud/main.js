@@ -23,7 +23,17 @@ Parse.Cloud.define("notificationService", function(request, response) {
       _.each(stories, function(story) {
         var last_update = story.get('last_update')
         if (((new Date) - last_update) > TWO_HOURS) {
-          console.log(story.id)
+          var users = story.get("users")
+          var current_user = story.get("current_user")
+          var index = _.indexOf(users, current_user)
+          //might have to wrap around array
+          if(index === users.length - 1) {
+            current_user = users[0]
+          } else {
+            current_user = users[index+1]
+          }
+          story.set("current_user", current_user)
+          sendUserNotification(current_user)
         }
       })
     },
