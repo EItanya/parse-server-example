@@ -10,6 +10,7 @@ var _ = require('underscore')
 
 
 Parse.Cloud.define("notificationService", function(request, response) {
+  var TWO_HOURS = 2 * 60 * 60 * 1000; /* ms */
   console.log("We're in the notification service")
   var Story = Parse.Object.extend("Story")
   var query = new Parse.Query(Story)
@@ -20,7 +21,10 @@ Parse.Cloud.define("notificationService", function(request, response) {
     success: function(stories) {
       console.log("successfully retrieved stories with udpates")
       _.each(stories, function(story) {
-        console.log(story.id)
+        var last_update = story.get('last_update')
+        if (((new Date) - last_update) > TWO_HOURS) {
+          console.log(story.id)
+        }
       })
     },
     error: function(error) {
