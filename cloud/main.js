@@ -38,7 +38,7 @@ Parse.Cloud.define("notificationService", function(request, response) {
           story.save(null, {
           success: function(story){
               console.log("success re-saving story")
-              sendUserNotification(story)
+              sendUserNotification(story, current_user)
             },
           error: function(story, error){
               console.log(error)
@@ -53,7 +53,7 @@ Parse.Cloud.define("notificationService", function(request, response) {
   })
 })
 
-function sendUserNotification(story) {
+function sendUserNotification(story, id) {
 
   // var query = new Parse.Query(Parse.Installation);
   // query.exists("deviceToken");
@@ -61,10 +61,9 @@ function sendUserNotification(story) {
   // var query = new Parse.Query(Parse.Installation);
   // query.equalTo('channels', id);  
 
-  var id = story.id
+  // var id = story.id
   var title = story.get('title')
 
-  console.log(id)
   Parse.Push.send({
     channels: [ id ],
     // where: query,
@@ -159,7 +158,7 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
           story.save(null, {
             success: function(story){
               if (!story.get('completed')) {
-                sendUserNotification(story)
+                sendUserNotification(story, current_user)
               }
               response.success(story.id)
               console.log("success")
