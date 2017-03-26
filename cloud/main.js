@@ -16,7 +16,8 @@ Parse.Cloud.define("notificationService", function(request, response) {
   var query = new Parse.Query(Story)
 
   query.exists("last_update")
-
+  query.equalTo('completed', false)
+  
   query.find({
     success: function(stories) {
       console.log("successfully retrieved stories with udpates")
@@ -157,7 +158,9 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
           story.set("current_user", current_user)
           story.save(null, {
             success: function(story){
-              sendUserNotification(story)
+              if (!story.get('completed')) {
+                sendUserNotification(story)
+              }
               response.success(story.id)
               console.log("success")
             },
