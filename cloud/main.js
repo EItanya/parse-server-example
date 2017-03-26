@@ -33,7 +33,16 @@ Parse.Cloud.define("notificationService", function(request, response) {
             current_user = users[index+1]
           }
           story.set("current_user", current_user)
-          sendUserNotification(current_user)
+          story.set('last_update', new Date())
+          story.save(null, {
+          success: function(story){
+              console.log("success re-saving story")
+              sendUserNotification(current_user)
+            },
+          error: function(story, error){
+              console.log(error)
+            }
+          });
         }
       })
     },
