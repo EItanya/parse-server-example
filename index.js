@@ -24,12 +24,20 @@ var api = new ParseServer({
   },
   facebookAppIds: ['1281853521913246'],
   push: {
-    ios: {
-      pfx: __dirname + '/certs/apns_certs.p12',
-      passphrase: 'password',
-      bundleId: 'com.cs378.SnowballApp',
-      production: false
-    }
+    ios: [
+      {
+        pfx: __dirname + '/certs/apns_cert.p12',
+        passphrase: 'password',
+        bundleId: 'com.cs378.SnowballApp',
+        production: false
+      },
+      {
+        pfx: __dirname + '/certs/apns_certs.p12',
+        passphrase: 'password',
+        bundleId: 'com.cs378.SnowballApp',
+        production: true
+      }
+    ]
   }
 });
 // Client-keys like the javascript key or the .NET key are not necessary with parse-server
