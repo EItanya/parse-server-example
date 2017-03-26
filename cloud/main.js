@@ -139,6 +139,9 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
           story.set("previous_entry", entry.id)
           story.set('last_update', new Date())
           story.set('current_entry', story.get('current_entry') + 1)
+          if(story.get('current_entry') >= story.get('total_turns')) {
+            story.set('completed', true)
+          }
           //change turn to next user
           var users = story.get("users")
           var current_user = story.get("current_user")
