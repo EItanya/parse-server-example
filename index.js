@@ -26,9 +26,10 @@ var api = new ParseServer({
   push: {
     ios: 
       {
-        pfx: __dirname + '/certs/apns_certs.p12',
+        pfx: __dirname + '/certs/apns_cert.p12',
         passphrase: 'password',
         bundleId: 'com.cs378.SnowballApp',
+        production: false
       }
       // {
       //   pfx: __dirname + '/certs/apns_certs.p12',
