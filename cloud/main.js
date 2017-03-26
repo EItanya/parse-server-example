@@ -25,7 +25,7 @@ function sendUserNotification(id) {
 
   console.log(id)
   Parse.Push.send({
-    channels: [ "default", id ],
+    channels: [ id ],
     // where: query,
     data: {
       alert: "It's your turn in This story!"
