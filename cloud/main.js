@@ -11,7 +11,19 @@ var _ = require('underscore')
 
 Parse.Cloud.define("notificationService", function(request, response) {
   console.log("We're in the notification service")
+  var Story = Parse.Object.extend("Story")
+  var query = new Parse.Query(Story)
 
+  query.exists("last_update")
+
+  query.find({
+    success: function(stories) {
+      console.log("successfully retrieved stories with udpates")
+    },
+    error: function(error) {
+      console.log(error)
+    }
+  })
 })
 
 function sendUserNotification(id) {
