@@ -73,6 +73,7 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
           entry_ids.push(entry.id)
           story.set("entry_ids",  entry_ids)
           story.set("previous_entry", entry.id)
+          story.set('last_update', new Date())
           story.set('current_entry', story.get('current_entry') + 1)
           //change turn to next user
           var users = story.get("users")
@@ -131,7 +132,6 @@ Parse.Cloud.define("createStory", function(request, response) {
       story.set('first_entry', entry.id)
       story.set('previous_entry', entry.id)
       story.set('entry_ids', [entry.id])
-      story.set('last_update', new Date())
       story.save(null, {
         success: function(story){
           response.success(story.id);
