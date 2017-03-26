@@ -19,6 +19,9 @@ Parse.Cloud.define("notificationService", function(request, response) {
   query.find({
     success: function(stories) {
       console.log("successfully retrieved stories with udpates")
+      _.each(stories, function(story) {
+        console.log(story.id)
+      })
     },
     error: function(error) {
       console.log(error)
