@@ -144,22 +144,38 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
           story.set("previous_entry", entry.id)
           story.set('last_update', new Date())
           story.set('current_entry', story.get('current_entry') + 1)
+
           if(story.get('current_entry') >= story.get('total_turns')) {
             story.set('completed', true)
-            
+            userQuery.containedIn("objectId", story.get('users'))
+            userQuery.find({
+              success: function(results){
+                console.log("Success getting users from completed story")
+                _.each(results, function(user) {
+                  var new_active_stories = _.filter(user.get('active_stories'), function(val){
+                    return val !== story.id
+                  })
+                  console.log(new_active_stories)
+                  var new_completed_stories = user.get('completed_stories').push(story.id)
+                  console.log(new_completed_stories)
+                  user.set('active_stories', new_active_stories)
+                  user.set('completed_stories', new_completed_stories)
+                  user.save(null , {
+                    success: function(user){
+                      console.log('successfully re-saved User')
+                    },
+                    error: function(error) {
+                      console.log('Could not re-save User')
+                    }
+                  });
+                })
+              },
+              error: function(error) {
+                console.log("error getting users from completed story")
+              }
+            })
           }
-          userQuery.containedIn("objectId", story.get('users'))
-          userQuery.find({
-            success: function(results){
-              console.log("Success getting users from completed story")
-              _.each(results, function(user) {
-                console.log(user.id)
-              })
-            },
-            error: function(error) {
-              console.log("error getting users from completed story")
-            }
-          })
+          
           //change turn to next user
           var users = story.get("users")
           var current_user = story.get("current_user")
