@@ -124,6 +124,9 @@ Parse.Cloud.define("startUserTurn", function(request, response) {
 //add an entry to the story list and save entry
 Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
 
+  
+  var userQuery = new Parse.Query(Parse.User)
+
   var Story = Parse.Object.extend("Story");
   var query = new Parse.Query(Story)
   query.get(request.params.storyId, {
@@ -143,7 +146,20 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
           story.set('current_entry', story.get('current_entry') + 1)
           if(story.get('current_entry') >= story.get('total_turns')) {
             story.set('completed', true)
+            
           }
+          userQuery.containedIn("objectId", story.get('users'))
+          userQuery.find({
+            success: function(results){
+              console.log("Success getting users from completed story")
+              _.each(results, function(user) {
+                console.log(user.id)
+              })
+            },
+            error: function(error) {
+              console.log("error getting users from completed story")
+            }
+          })
           //change turn to next user
           var users = story.get("users")
           var current_user = story.get("current_user")
