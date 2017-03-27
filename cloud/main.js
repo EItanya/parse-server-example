@@ -166,13 +166,15 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
                   console.log(new_completed_stories)
                   user.set('active_stories', new_active_stories)
                   user.set('completed_stories', new_completed_stories)
-                  user.save({sessionToken: user.getSessionToken()} , {
+                  user.save(null , {
                     success: function(user){
                       console.log('successfully re-saved User')
                     },
                     error: function(error) {
                       console.log('Could not re-save User')
-                    }
+                    },
+                    useMasterKey: true,
+                    sessionToken: user.getSessionToken()
                   });
                 })
               },
