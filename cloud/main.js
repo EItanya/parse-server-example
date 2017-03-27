@@ -156,7 +156,13 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
                     return val !== story.id
                   })
                   console.log(new_active_stories)
-                  var new_completed_stories = user.get('completed_stories').push(story.id)
+                  let completed_stories = user.get('completed_stories')
+                  if (completed_stories.length === 0){
+                    var new_completed_stories = [];
+                  } else {
+                    var new_completed_stories = completed_stories
+                  }
+                  new_completed_stories.push(story.id)
                   console.log(new_completed_stories)
                   user.set('active_stories', new_active_stories)
                   user.set('completed_stories', new_completed_stories)
