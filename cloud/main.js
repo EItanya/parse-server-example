@@ -147,6 +147,7 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
 
           if(story.get('current_entry') >= story.get('total_turns')) {
             story.set('completed', true)
+            story.set('url', 'https://s3-us-west-2.amazonaws.com/mobile-news-app/'+ story.id +'.pdf')
             userQuery.containedIn("objectId", story.get('users'))
             userQuery.find({
               success: function(results){
@@ -155,7 +156,6 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
                   var new_active_stories = _.filter(user.get('active_stories'), function(val){
                     return val !== story.id
                   })
-                  console.log(new_active_stories)
                   let completed_stories = user.get('completed_stories')
                   if (completed_stories.length === 0){
                     var new_completed_stories = [];
@@ -163,7 +163,6 @@ Parse.Cloud.define("updateStoryWithEntry", function(request, response) {
                     var new_completed_stories = completed_stories
                   }
                   new_completed_stories.push(story.id)
-                  console.log(new_completed_stories)
                   user.set('active_stories', new_active_stories)
                   user.set('completed_stories', new_completed_stories)
                   user.save(null , {
