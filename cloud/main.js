@@ -233,6 +233,7 @@ Parse.Cloud.define("createStory", function(request, response) {
   var entry = new Parse.Object("Entry")
 
   story.set(request.params.story)
+  story.set('url', '')
   entry.set(request.params.entry)
 
 
