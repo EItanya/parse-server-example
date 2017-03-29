@@ -8,7 +8,9 @@ var _ = require('underscore')
 
 Parse.Cloud.define("inviteUsers", function(request, response) {
   var invites = request.params.invites
+  var title = request.params.story_name
   var invite_objects = []
+  var channels = []
   _.each(invites, function(invite) {
     var parse_invite = new Parse.Object("Invite")
     parse_invite.set('to', invite.to)
@@ -18,8 +20,13 @@ Parse.Cloud.define("inviteUsers", function(request, response) {
   });
   Parse.Object.saveAll(invite_objects, {
     success: function(list) {
+      _.each(list, function(invite) {
+        channels.push(invite.id)
+      })
+      console.log(channels)
+      // sendInviteNotification(title, channels)
       console.log("Successfully sent all invites")
-      response.success("Successfully sent all invites")
+      response.success(list)
     },
     error: function(error) {
       console.log("Error sending invites")
@@ -28,6 +35,28 @@ Parse.Cloud.define("inviteUsers", function(request, response) {
   });
 
 })
+
+function sendInviteNotification(title, id) {
+
+
+  Parse.Push.send({
+    channels: id,
+    // where: query,
+    data: {
+      alert: "It's now your turn for: " + title + ". You have 2 hours starting now!"
+    }
+    }, {
+      success: function() {
+        console.log("push notification was sent successfully")
+        // Push was successful
+      },
+      error: function(error) {
+        console.log("error sending push notification")
+        // Handle error
+      },
+      useMasterKey: true
+  });
+}
 
 
 Parse.Cloud.define("notificationService", function(request, response) {
