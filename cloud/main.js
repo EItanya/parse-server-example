@@ -21,10 +21,10 @@ Parse.Cloud.define("inviteUsers", function(request, response) {
   Parse.Object.saveAll(invite_objects, {
     success: function(list) {
       _.each(list, function(invite) {
-        channels.push(invite.id)
+        channels.push(invite.get('to'))
       })
       console.log(channels)
-      // sendInviteNotification(title, channels)
+      sendInviteNotification(title, name, channels)
       console.log("Successfully sent all invites")
       response.success(list)
     },
@@ -36,14 +36,14 @@ Parse.Cloud.define("inviteUsers", function(request, response) {
 
 })
 
-function sendInviteNotification(title, id) {
+function sendInviteNotification(title, name, id) {
 
 
   Parse.Push.send({
     channels: id,
     // where: query,
     data: {
-      alert: "It's now your turn for: " + title + ". You have 2 hours starting now!"
+      alert: "You have been Invited to " +title+ " by " +name+ ". \nClick here to accept"
     }
     }, {
       success: function() {
