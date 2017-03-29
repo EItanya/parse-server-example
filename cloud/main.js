@@ -6,7 +6,28 @@ var _ = require('underscore')
 //   console.log(request.params.entry)
 // });
 
+Parse.Cloud.define("inviteUsers", function(request, response) {
+  var invites = request.params.invites
+  var invite_objects = []
+  _.each(invites, function(invite) {
+    var parse_invite = new Parse.Object("Invite")
+    parse_invite.set('to', invite.to)
+    parse_invite.set('from', invite.from)
+    parse_invite.set('story', invite.story)
+    invite_objects.push(parse_invite)
+  });
+  Parse.Object.saveAll(invite_objects, {
+    success: function(list) {
+      console.log("Successfully sent all invites")
+      response.success("Successfully sent all invites")
+    },
+    error: function(error) {
+      console.log("Error sending invites")
+      response.error(error)
+    }
+  });
 
+})
 
 
 Parse.Cloud.define("notificationService", function(request, response) {
