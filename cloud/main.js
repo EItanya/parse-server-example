@@ -24,9 +24,9 @@ Parse.Cloud.define("inviteUsers", function(request, response) {
         channels.push(invite.get('to'))
       })
       console.log(channels)
-      sendInviteNotification(title, name, channels)
       console.log("Successfully sent all invites")
       response.success(list)
+      sendInviteNotification(title, name, channels)
     },
     error: function(error) {
       console.log("Error sending invites")
